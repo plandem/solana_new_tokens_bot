@@ -1,0 +1,31 @@
+services:
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    command: --port ${REDIS_PORT}
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+
+  token_monitor:
+    restart: unless-stopped
+    build:
+      context: ./token-monitor
+    command: yarn run dev
+    volumes:
+      - ./token-monitor/src:/app/src
+    env_file:
+        - .env
+    depends_on:
+      - redis
+
+  telegram_bot:
+    restart: unless-stopped
+    build:
+      context: ./telegram-bot
+    command: yarn run dev
+    volumes:
+      - ./telegram-bot/src:/app/src
+    env_file:
+      - .env
+    depends_on:
+      - redis

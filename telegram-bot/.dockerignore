@@ -1,0 +1,10 @@
+# ignore build and node_modules
+build/
+node_modules/
+
+# and other files
+.github
+.gitignore
+.git
+.dockerignore
+Dockerfile
